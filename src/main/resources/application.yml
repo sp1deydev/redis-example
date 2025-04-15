@@ -4,13 +4,17 @@ server:
     context-path: /api
 
 spring:
+  cache:
+    type: redis
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: payment
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/api_redis
+    url: jdbc:postgresql://103.70.13.202:5432/api_redis
     username: postgres
-    password: 123456
+    password: Qwertyu1@
     hikari:
       connection-timeout: 60000
       maximum-pool-size: 25
@@ -30,3 +34,8 @@ spring:
         jdbc.batch_size: 1000
         order_inserts: true
         default_schema: public
+  data:
+    redis:
+      host: 103.70.13.202
+      port: 6379
+      password: Qwertyu1@
