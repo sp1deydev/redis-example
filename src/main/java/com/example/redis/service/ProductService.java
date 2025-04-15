@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -44,13 +45,22 @@ public class ProductService {
                 .build();
     }
     // get products not using redis cache
-    public List<Product> getProducts() {
+    public List<ProductResponse> getProducts() {
         log.info("[getProducts] - get list products START");
+        List<ProductRedis> cacheOpts = productRedisRepository.findAll();
+        if(!cacheOpts.isEmpty()) {
+            log.info("[getProducts] - get list products in cache END");
+            return cacheOpts.stream().map(ProductResponse::new).collect(Collectors.toList());
+
+        }
 
         List<Product> products =  productRepository.findAll();
-
+        List<ProductRedis> redisProducts = products.stream()
+                .map(product -> new ProductRedis(product, 1000)) // Make sure you have a constructor or mapper
+                .toList();
+        productRedisRepository.saveAll(redisProducts);
         log.info("[getProducts] - get list products END");
-        return products;
+        return products.stream().map(ProductResponse::new).collect(Collectors.toList());
     }
 
     // get product detail using redis cache

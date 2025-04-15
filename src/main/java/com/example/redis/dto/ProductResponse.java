@@ -1,6 +1,7 @@
 package com.example.redis.dto;
 
 import com.example.redis.entity.Product;
+import com.example.redis.redis.entity.ProductRedis;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,10 @@ public class ProductResponse {
         this.id = id;
         this.productName = productName;
         this.quantity = quantity;
+    }
+
+    public ProductResponse(ProductRedis productRedis) {
+        this(productRedis.getId(), productRedis.getProductName(), productRedis.getQuantity());
     }
 
 //    public ProductResponse(Product product) {

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/products")
 @RequiredArgsConstructor
@@ -19,6 +21,11 @@ public class ProductController {
     @PostMapping
     public ProductResponse createProduct(@RequestBody ProductRequest request) {
         return productService.createProduct(request);
+    }
+
+    @GetMapping
+    public List<ProductResponse> getProducts() {
+        return productService.getProducts();
     }
 
     @GetMapping("/{id}")
